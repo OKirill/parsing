@@ -1,9 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
-import xml
+
+
 
 def get_html(url):
+    """вытягиваем из url html"""
     my_request = requests.get(url)
     return my_request.text
 
@@ -15,6 +17,7 @@ def refined(s):
 
 
 def write_csv(data):
+    """Запись результатов парсинга в cvs файл"""
     with open('plugins.csv', 'a') as f:
         writer = csv.writer(f)
 
@@ -23,9 +26,8 @@ def write_csv(data):
                          data['reviews']))
 
 
-
-
 def get_data(html):
+    """преобразуем html в python """
     soup = BeautifulSoup(html, 'lxml')
     popular = soup.find_all('section')[3]
     plugins = popular.find_all('article')
@@ -40,13 +42,12 @@ def get_data(html):
                 'url': url,
                 'reviews': rating}
 
-        #print(data)
+        # print(data)
         write_csv(data)
-
-    # return  plugins
 
 
 def main():
+    """обрабатываем url"""
     url = 'https://wordpress.org/plugins/'
     print(get_data(get_html(url)))
 
