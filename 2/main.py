@@ -1,16 +1,28 @@
 import requests
 from bs4 import BeautifulSoup
-
+import csv
+import xml
 
 def get_html(url):
     my_request = requests.get(url)
     return my_request.text
 
+
 def refined(s):
     """1,676 total ratings"""
     rating_split = s.split()[0]
-    result = rating_split.replace(',', '')
-    print(result)
+    return rating_split.replace(',', '')
+
+
+def write_csv(data):
+    with open('plugins.csv', 'a') as f:
+        writer = csv.writer(f)
+
+        writer.writerow((data['name'],
+                         data['url'],
+                         data['reviews']))
+
+
 
 
 def get_data(html):
@@ -21,11 +33,17 @@ def get_data(html):
     for plugin in plugins:
         name = plugin.find('h2').text
         url = plugin.find('h2').find('a').get('href')
-        rating = plugin.find('span', class_='rating-count').find('a').text
-        refined(rating)
-        #print(rating)
+        rate = plugin.find('span', class_='rating-count').find('a').text
+        rating = refined(rate)
 
-    #return  plugins
+        data = {'name': name,
+                'url': url,
+                'reviews': rating}
+
+        #print(data)
+        write_csv(data)
+
+    # return  plugins
 
 
 def main():

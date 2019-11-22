@@ -107,3 +107,8 @@ crashlytics.properties
 crashlytics-build.properties
 
 /*.zip
+*.csv
+
+2/plugins1.xml
+
+*.xlsx
