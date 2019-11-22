@@ -49,7 +49,7 @@ def get_data(html):
 def main():
     """обрабатываем url"""
     url = 'https://wordpress.org/plugins/'
-    print(get_data(get_html(url)))
+    get_data(get_html(url))
 
 
 if __name__ == '__main__':
