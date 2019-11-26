@@ -11,9 +11,13 @@ def get_html(url):
 
 
 def write_csv(data):
-    with open('rambler.csv', 'a') as f:
+    with open('rambler.csv', 'a', encoding='utf-8') as f:
         writer = csv.writer(f)
-        pass
+        writer.writerow([
+            data['name'],
+            data['url'],
+            data['visitors']
+        ])
 
 
 def get_page_data(html):
@@ -22,8 +26,9 @@ def get_page_data(html):
     tbl = soup.find_all('tr', class_='nZPAY')
 
     for table in tbl:
+
         try:
-            name = table.find('a', class_="_1QK24 _1mcB-").text
+            name = table.find('a', class_="_1QK24 _1mcB-").text.strip()
 
         except:
             name = ''
@@ -40,12 +45,21 @@ def get_page_data(html):
         except:
             visitors = ''
 
-        print(visitors)
+        data = {
+            'name': name,
+            'url': url,
+            'visitors': visitors
+        }
+
+        write_csv(data)
 
 
 def main():
-    url = 'https://top100.rambler.ru/navi?categoryId=1064&period=day&sort=popularity&page=1'
-    get_page_data(get_html(url))
+    pattern = 'https://top100.rambler.ru/navi?categoryId=1064&period=day&sort=popularity&page={}'
+
+    for i in range(1, 16):
+        url = pattern.format(str(i))
+        get_page_data(get_html(url))
 
 
 if __name__ == '__main__':
