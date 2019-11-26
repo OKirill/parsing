@@ -12,12 +12,17 @@ def write_csv(data):
         writer = scv.writer(f)
         pass
 
+
 def get_page_data(html):
     soup = BeautifulSoup(html, 'lxml')
 
+    trs = soup.find('table', id='currencies').find('tbody').find_all('tr')
+    print(len(trs))
+
 
 def main():
-    pass
+    url = 'https://coinmarketcap.com/'
+    get_page_data(get_html(url))
 
 
 if __name__ == '__main__':
