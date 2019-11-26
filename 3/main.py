@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 
+
 def get_html(url):
     r = requests.get(url)
     return r.text
@@ -23,6 +24,7 @@ def get_page_data(html):
     soup = BeautifulSoup(html, 'lxml')
 
     trs = soup.find('table', id='currencies').find('tbody').find_all('tr')
+
     for tr in trs:
         tds = tr.find_all('td')
         name = tds[1].find('a', class_='currency-name-container').text
